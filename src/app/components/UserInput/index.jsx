@@ -4,7 +4,7 @@ export default class UserInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            mutationsArray: null,
+            mutationsArray: [],
             currentInputString: "",
             stringGoal: ""
         };
@@ -12,7 +12,11 @@ export default class UserInput extends Component {
 
     componentDidMount() {
         this.setStringMutationGoal();
-        this.timeout = window.setInterval(this.setInputInterval, this.props.msPerCharacter);
+        const { wordsPerMinute } = this.props;
+        const charactersPerMinute = wordsPerMinute * 5;
+        const charactersPerMillisecond = charactersPerMinute / (60 * 1000);
+
+        this.timeout = window.setInterval(this.setInputInterval, 1 / charactersPerMillisecond);
     }
 
     componentWillUnmount() {
@@ -69,6 +73,6 @@ export default class UserInput extends Component {
     }
 
     render() {
-        return (<div>{this.state.currentInputString}</div>);
+        return (<div>{this.state.currentInputString}_</div>);
     }
 };

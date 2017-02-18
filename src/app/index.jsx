@@ -18,8 +18,8 @@ export default class App extends Component {
                 	<Prompt />
                 	<UserInput
                 		onInputFinish={this.handleUserInputFinish}
-                		input={["hello. world", "hello", "hello, world!"]}
-                		msPerCharacter={200}
+                		input={"this is the goal of the entire output, it will take a while to finish"}
+                		wordsPerMinute={120}
                 	/>
                 </div>
                 <Output />
