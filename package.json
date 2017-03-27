@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "description": "basic scaffold for react app with babel and webpack without the extra cruft of create-react-app",
   "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo no test environment set up",
+    "lint": "eslint src/**/*.jsx src/**/*.js",
+    "dev": "node -r babel-register dev-server.js",
+    "build": "webpack -p --config webpack.production.config.js"
+  },
   "dependencies": {
     "express": "^4.14.0",
     "react": "^15.4.1",
@@ -35,12 +41,6 @@
     "webpack": "^2.1.0-beta.25",
     "webpack-browser-plugin": "^1.0.16",
     "webpack-dev-server": "^2.1.0-beta.10"
-  },
-  "scripts": {
-    "test": "echo no test environment set up",
-    "lint": "eslint src/**/*.jsx src/**/*.js",
-    "dev": "node -r babel-register dev-server.js",
-    "build": "webpack -p --config webpack.production.config.js"
   },
   "author": "Mike Axtman",
   "license": "ISC"
