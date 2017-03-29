@@ -8,7 +8,7 @@ import History from "./components/history";
 
 export default class App extends Component {
   handleUserInputFinish = () => {
-
+    console.log("finished");
   }
 
   render() {
@@ -18,8 +18,7 @@ export default class App extends Component {
         <div className={styles.inputLine}>
           <Prompt />
           <UserInput
-            onInputFinish={this.handleUserInputFinish}
-            input={"hello, how are you doing today?"}
+            input={["hello, how are you doing today?", "hello", "hello, doing good?"]}
             wordsPerMinute={120}
           />
         </div>

@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from "react";
+import noop from "lodash/noop";
 
 class UserInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
       currentInputString: "",
-      stringGoal: ""
+      stringGoal: "",
+      mutationsArray: []
     };
   }
 
@@ -25,18 +27,17 @@ class UserInput extends Component {
   setStringMutationGoal = () => {
     if (Array.isArray(this.props.input)) {
       const { mutationsArray } = this.state;
-
-      const localArray = mutationsArray ?
+      const arr = mutationsArray.length ?
         mutationsArray.slice() :
         this.props.input.slice();
 
-      if (!this.isCurrentStringMutableToNext(localArray)) {
-        localArray.splice(1, 0, "");
+      if (!this.isCurrentStringMutableToNext(arr)) {
+        arr.splice(1, 0, "");
       }
 
       this.setState({
-        stringGoal: localArray.shift(),
-        mutationsArray: localArray.slice()
+        stringGoal: arr.shift(),
+        mutationsArray: arr.slice()
       });
 
       return;
@@ -58,21 +59,22 @@ class UserInput extends Component {
       }
 
       this.clearInterval();
+      this.props.onInputFinish(currentInputString);
 
       return;
     }
 
-    const sliceTo = currentInputString.length > stringGoal.length ?
+    const nextMutation = currentInputString.length > stringGoal.length ?
       currentInputString.slice(0, -1)
       :
       stringGoal.slice(0, currentInputString.length + 1);
 
     this.setState({
-      currentInputString: sliceTo
+      currentInputString: nextMutation
     });
   }
 
-  isCurrentStringMutableToNext([stringOne, stringTwo]) {
+  isCurrentStringMutableToNext = ([stringOne, stringTwo]) => {
     if (typeof stringOne === "string" && typeof stringTwo === "string") {
       return stringOne.includes(stringTwo) || stringTwo.includes(stringOne);
     }
@@ -89,11 +91,15 @@ class UserInput extends Component {
   }
 }
 
+UserInput.defaultProps = {
+  onInputFinish: noop
+};
+
 UserInput.propTypes = {
   onInputFinish: PropTypes.func,
   input: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.array
+    PropTypes.arrayOf(PropTypes.number)
   ]),
   wordsPerMinute: PropTypes.number
 };
