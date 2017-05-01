@@ -63,5 +63,8 @@ export default {
       template: "index.html",
       inject: "body"
     })
-  ]
+  ],
+  performance: {
+    hints: false
+  }
 };

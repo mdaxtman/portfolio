@@ -12,20 +12,38 @@ class UserInput extends Component {
   }
 
   componentDidMount() {
-    this.setStringMutationGoal();
-    const { wordsPerMinute } = this.props;
-    const charactersPerMinute = wordsPerMinute * 5;
-    const charactersPerMillisecond = charactersPerMinute / (60 * 1000);
+    this.setStringMutationGoal(this.props);
+    this.setComponentInterval(this.props);
+  }
 
-    this.timeout = window.setInterval(this.setInputInterval, 1 / charactersPerMillisecond);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.input !== this.props.input) {
+      this.setStringMutationGoal(nextProps);
+      this.setComponentInterval(nextProps);
+    }
   }
 
   componentWillUnmount() {
     this.clearInterval();
   }
 
-  setStringMutationGoal = () => {
-    if (Array.isArray(this.props.input)) {
+  setComponentInterval(props) {
+    if (!props.input) {
+      return;
+    }
+    const wordsPerMinute = props.wordsPerMinute || this.props.wordsPerMinute;
+
+    // assume average word length is 5 characters
+    const charactersPerMinute = wordsPerMinute * 5;
+
+    // number of characters in one minute divided by number of miliseconds in a minute
+    this.charactersPerMillisecond = charactersPerMinute / (60 * 1000);
+
+    this.interval = window.setInterval(this.intervalCallback, 1 / this.charactersPerMillisecond);
+  }
+
+  setStringMutationGoal = (props) => {
+    if (Array.isArray(props.input)) {
       const { mutationsArray } = this.state;
       const arr = mutationsArray.length ?
         mutationsArray.slice() :
@@ -43,12 +61,21 @@ class UserInput extends Component {
       return;
     }
 
+    if (!props.input) {
+      this.setState({
+        currentInputString: "",
+        stringGoal: ""
+      });
+
+      return;
+    }
+
     this.setState({
-      stringGoal: this.props.input
+      stringGoal: props.input
     });
   }
 
-  setInputInterval = () => {
+  intervalCallback = () => {
     const { mutationsArray, stringGoal, currentInputString } = this.state;
 
     if (currentInputString.length === stringGoal.length) {
@@ -83,7 +110,7 @@ class UserInput extends Component {
   }
 
   clearInterval() {
-    window.clearInterval(this.timeout);
+    window.clearInterval(this.interval);
   }
 
   render() {
