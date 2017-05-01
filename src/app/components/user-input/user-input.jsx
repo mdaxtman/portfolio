@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import noop from "lodash/noop";
+import includes from "lodash/includes";
 
 class UserInput extends Component {
   constructor(props) {
@@ -103,7 +104,7 @@ class UserInput extends Component {
 
   isCurrentStringMutableToNext = ([stringOne, stringTwo]) => {
     if (typeof stringOne === "string" && typeof stringTwo === "string") {
-      return stringOne.includes(stringTwo) || stringTwo.includes(stringOne);
+      return includes(stringOne, stringTwo) || includes(stringTwo, stringOne);
     }
 
     return true;
