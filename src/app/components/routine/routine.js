@@ -8,9 +8,21 @@
 const script = () => [
   {
     input: "cd repositories",
-    prompt: "~/repositories"
+    prompt: "~/repositories",
+    delay: 1000
   },
-  "how are you today?"
+  {
+    input: "ls",
+    history: "stuff",
+    delay: 3000
+  },
+  {
+    input: "select one",
+    output: "this or that"
+  },
+  {
+    input: ["typing this with a tip", "typing this with a t", "typing this with a typo"]
+  }
 ];
 
 export default script;

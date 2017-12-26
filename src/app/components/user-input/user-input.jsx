@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 class UserInput extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       currentInputString: "",
       stringGoal: "",
@@ -38,20 +39,21 @@ class UserInput extends Component {
     // assume average word length is 5 characters
     const charactersPerMinute = wordsPerMinute * 5;
 
-    // number of characters in one minute divided by number of miliseconds in a minute
+    // number of characters in one minute divided by number of milliseconds in a minute
     this.charactersPerMillisecond = charactersPerMinute / (60 * 1000);
 
     this.interval = window.setInterval(this.intervalCallback, 1 / this.charactersPerMillisecond);
   }
 
-  setStringMutationGoal = (props) => {
+  setStringMutationGoal = (props = this.props) => {
     if (Array.isArray(props.input)) {
       const { mutationsArray } = this.state;
       const arr = mutationsArray.length ?
         mutationsArray.slice() :
-        this.props.input.slice();
+        props.input.slice();
 
       if (!this.isCurrentStringMutableToNext(arr)) {
+        console.log(arr);
         arr.splice(1, 0, "");
       }
 
@@ -121,14 +123,16 @@ class UserInput extends Component {
 }
 
 UserInput.defaultProps = {
-  onInputFinish: noop
+  onInputFinish: noop,
+  input: "",
+  wordsPerMinute: 100
 };
 
 UserInput.propTypes = {
   onInputFinish: PropTypes.func,
   input: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.arrayOf(PropTypes.number)
+    PropTypes.arrayOf(PropTypes.string)
   ]),
   wordsPerMinute: PropTypes.number
 };
