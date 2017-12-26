@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 export default class UserInput extends Component {
     constructor(props) {
@@ -12,6 +13,7 @@ export default class UserInput extends Component {
 
     componentDidMount() {
         this.setStringMutationGoal();
+        
         const { wordsPerMinute } = this.props;
         const charactersPerMinute = wordsPerMinute * 5;
         const charactersPerMillisecond = charactersPerMinute / (60 * 1000);
