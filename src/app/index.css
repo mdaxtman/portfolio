@@ -6,6 +6,7 @@
 .main {
 	background: #000;
 	color: #0f0;
+  line-height: 1.5em;
 	height: 750px;
 	width: 1000px;
 	font-family: "Modes";
