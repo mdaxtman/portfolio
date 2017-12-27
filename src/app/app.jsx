@@ -38,6 +38,7 @@ export default class App extends Component {
     if (!script || !script.length) {
       return;
     }
+
     const currentRoutine = script.shift();
     const input =
       Array.isArray(currentRoutine.input) ?
@@ -55,6 +56,9 @@ export default class App extends Component {
   handleUserInputFinish = () => {
     if (this.state.currentRoutine.output) {
       this.setState({
+        history: this.state.history.concat([
+          <div>{cleanString(this.promptText.textContent)}</div>
+        ]),
         output: this.state.currentRoutine.output
       });
 
@@ -76,22 +80,31 @@ export default class App extends Component {
   }
 
   render() {
+    const {
+      output, input, history, prompt
+    } = this.state;
+
     return (
       <div className={styles.main}>
-        <History text={this.state.history} />
-        <div
-          className={styles.inputLine}
-          ref={(element) => { this.promptText = element; }}
-        >
-          <Prompt currentPath={this.state.prompt} />
-          <UserInput
-            onInputFinish={this.handleUserInputFinish}
-            input={this.state.input}
-            wordsPerMinute={120}
-          />
-        </div>
+        <History text={history} />
+        {
+          !output ?
+            <div
+              className={styles.inputLine}
+              ref={(element) => { this.promptText = element; }}
+            >
+              <Prompt currentPath={prompt} />
+              <UserInput
+                onInputFinish={this.handleUserInputFinish}
+                input={input}
+                wordsPerMinute={120}
+              />
+            </div>
+            :
+            null
+        }
         <Output
-          returnValue={this.state.output}
+          returnValue={output}
           rootRef={(element) => { this.outputText = element; }}
         />
       </div>

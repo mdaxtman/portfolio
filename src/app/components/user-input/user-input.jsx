@@ -4,6 +4,21 @@ import includes from "lodash/includes";
 import PropTypes from "prop-types";
 
 class UserInput extends Component {
+  static propTypes = {
+    onInputFinish: PropTypes.func,
+    input: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.string)
+    ]),
+    wordsPerMinute: PropTypes.number
+  }
+
+  static defaultProps = {
+    onInputFinish: noop,
+    input: "",
+    wordsPerMinute: 100
+  }
+
   constructor(props) {
     super(props);
 
@@ -53,7 +68,6 @@ class UserInput extends Component {
         props.input.slice();
 
       if (!this.isCurrentStringMutableToNext(arr)) {
-        console.log(arr);
         arr.splice(1, 0, "");
       }
 
@@ -79,6 +93,11 @@ class UserInput extends Component {
     });
   }
 
+  handleInputFinish() {
+    this.clearInterval();
+    this.props.onInputFinish();
+  }
+
   intervalCallback = () => {
     const { mutationsArray, stringGoal, currentInputString } = this.state;
 
@@ -89,8 +108,7 @@ class UserInput extends Component {
         return;
       }
 
-      this.clearInterval();
-      this.props.onInputFinish(currentInputString);
+      this.handleInputFinish();
 
       return;
     }
@@ -121,20 +139,5 @@ class UserInput extends Component {
     return (<div>{this.state.currentInputString}_</div>);
   }
 }
-
-UserInput.defaultProps = {
-  onInputFinish: noop,
-  input: "",
-  wordsPerMinute: 100
-};
-
-UserInput.propTypes = {
-  onInputFinish: PropTypes.func,
-  input: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.string)
-  ]),
-  wordsPerMinute: PropTypes.number
-};
 
 export default UserInput;
