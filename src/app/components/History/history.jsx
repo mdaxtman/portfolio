@@ -3,7 +3,11 @@ import PropTypes from "prop-types";
 
 const History = props => (
   <div>
-    {props.text.map((item, i) => <div key={i}>{item}</div>)}
+    {props.text.map((item, i) => (
+      <div key={i}>
+        {item}
+      </div>
+    ))}
   </div>
 );
 

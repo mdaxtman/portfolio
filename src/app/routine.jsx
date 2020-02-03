@@ -1,3 +1,5 @@
+import React from "react";
+import Grid from "./components/grid/grid";
 // Array of objects with properties such as--
 // input -- what will be typed out in prompt
 // prompt -- what the prompt will be updated to when input is finished
@@ -13,8 +15,7 @@ const script = () => [
   },
   {
     input: "ls",
-    history: "stuff",
-    delay: 3000
+    history: <Grid items={["hello", "pi-to-trillionth.js", "blah", "foo", "bar"]} />
   },
   {
     input: "select one",

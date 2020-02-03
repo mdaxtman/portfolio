@@ -8,7 +8,7 @@ export default class Prompt extends Component {
 
   render() {
     return (
-      <span>{this.props.currentPath} $&nbsp; </span>
+      <span>{this.props.currentPath} $&nbsp;</span>
     );
   }
 }

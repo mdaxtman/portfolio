@@ -1,15 +1,14 @@
 import React, { Component } from "react";
-import pick from "lodash/pick";
 
 import History from "./components/history/history";
 import Output from "./components/output/output";
 import Prompt from "./components/prompt/prompt";
-import routine from "./components/routine/routine";
+import routine from "./routine";
 import styles from "./app.css";
 import UserInput from "./components/user-input/user-input";
 
 const cleanString = (str) => {
-  const rgx = new RegExp(`${String.fromCharCode(160)}|_$`, "g");
+  const rgx = new RegExp(`_$`, "g");
   return str.trim().replace(rgx, "");
 };
 
@@ -65,14 +64,23 @@ export default class App extends Component {
       return;
     }
 
-    const nextState = pick(this.state.currentRoutine, "prompt", "history");
+    const nextState = {
+      history: this.state.history.concat([<div>{cleanString(this.promptText.textContent)}</div>]),
+      input: null
+    };
+
+    const { history, prompt } = this.state.currentRoutine;
+
+    if (history) {
+      nextState.history.push(history);
+    }
+
+    if (prompt) {
+      nextState.prompt = prompt;
+    }
+
     const { delay = 0 } = this.state.currentRoutine;
     nextState.input = null;
-
-    nextState.history = this.state.history.concat([
-      <div>{cleanString(this.promptText.textContent)}</div>,
-      nextState.history
-    ]);
 
     this.setState(nextState, () => {
       window.setTimeout(() => this.dequeFromRoutineAndSetCurrentInput(), delay);
